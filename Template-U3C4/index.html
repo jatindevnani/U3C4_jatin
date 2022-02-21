@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!--Bootstrap CSS-->
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <!--Bootstrap CSS-->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+
+    <style>
+
+      #searchbar {
+        width: 70%;
+      }
+   
+      #news {
+        margin-top: 2%;
+      }
+
+      #news:hover  {
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+        padding: 1%;
+        cursor: pointer  
+      }
+
+      #sidebar {
+        padding-top: 3%;
+        padding-left: 2%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div
+      id="container"
+      class="container m-auto border mt-2 row justify-content-around p-2"
+    >
+      <div id="sidebar" class="col-3 border">
+        <!--DO NOT CHANGE THIS ID's-->
+        <!--Append the horizontal navbar(sidebar) here only-->
+      </div>
+
+      <div id="main" class="col-8 row border">
+        <!--DO NOT CHANGE THIS ID's-->
+        <!--Append top headlines from india here only-->
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <!-- JavaScript Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Bootstrap JS -->
+  </body>
+</html>
+
+<script type="module">
+  import { apiCall, appendArticles } from "./scripts/main.js";
+  import storeSearchterm from "./scripts/search.js";
+  import sidebar from "./components/sidebar.js";
+
+  //sidebar import
+  document.querySelector("#sidebar").innerHTML = sidebar();
+
+  //appending the news data (TRENDING);
+  //main url
+  let url = `https://shrouded-earth-23381.herokuapp.com/api/headlines/india`;
+
+  //parent box
+  let parent = document.querySelector("#main");
+  let articles = await apiCall(url);
+  console.log(articles);
+
+  //appending the data
+  appendArticles(articles, parent);
+
+  //adding keypress functionality to the searchbar
+  document
+    .querySelector("#searchbar")
+    .addEventListener("keypress", function (e) {
+      if (e.key == "Enter") {
+        let term = e.target.value;
+        storeSearchterm(term);
+      }
+    });
+</script>
